@@ -1,0 +1,119 @@
+{
+  "project_info": {
+    "project_number": "533444013159",
+    "firebase_url": "https://fire-30e38.firebaseio.com",
+    "project_id": "fire-30e38",
+    "storage_bucket": "fire-30e38.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533444013159:android:025bbd678333c5f79fb8c2",
+        "android_client_info": {
+          "package_name": "com.example.firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533444013159-4nbna6io56i0ms4srh2mu3dth03n5jej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUa9wNA1jTKcFahWTRjnuHtp_IhaeYACQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533444013159-4nbna6io56i0ms4srh2mu3dth03n5jej.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "533444013159-1190826j1ef8luuc9pogkp7sksj5mprg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.visioneugene.finalCommunication"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533444013159:android:cfaaaecb0dcb97109fb8c2",
+        "android_client_info": {
+          "package_name": "com.example.g"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533444013159-4nbna6io56i0ms4srh2mu3dth03n5jej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUa9wNA1jTKcFahWTRjnuHtp_IhaeYACQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533444013159-4nbna6io56i0ms4srh2mu3dth03n5jej.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "533444013159-1190826j1ef8luuc9pogkp7sksj5mprg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.visioneugene.finalCommunication"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533444013159:android:602e636a73d086f39fb8c2",
+        "android_client_info": {
+          "package_name": "com.visioneugene.final_communication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533444013159-4nbna6io56i0ms4srh2mu3dth03n5jej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUa9wNA1jTKcFahWTRjnuHtp_IhaeYACQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533444013159-4nbna6io56i0ms4srh2mu3dth03n5jej.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "533444013159-1190826j1ef8luuc9pogkp7sksj5mprg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.visioneugene.finalCommunication"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
