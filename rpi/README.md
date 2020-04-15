@@ -18,7 +18,7 @@ Push button for the rpi
 
 ## Wiring the Raspberry Pi Zero W
 
-![alt text](https://github.com/inafi/handy/edit/master/rpi/wiring.png)
+![alt text](https://github.com/inafi/handy/rpi/wiring.png)
 
 ## Installation
 
