@@ -45,7 +45,7 @@ Follow the steps given by the AWS Marketplace guide to configure the model in th
 
 ```
 cd VM
-pip install -r ../requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Running 
