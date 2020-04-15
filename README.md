@@ -15,6 +15,12 @@ Aside from the AWS Services, below are the other components used in making the H
 - 4 LEDs
 - Push button for the rpi
 - (optional) portable power bank 
+- (optional) IR distance sensor for distance detection
+- (optional) Arduino nano for distance detection
+
+## Wiring the Raspberry Pi Zero W
+
+[WIRING] (https://pages.github.com/)
 
 ## Installation
 
