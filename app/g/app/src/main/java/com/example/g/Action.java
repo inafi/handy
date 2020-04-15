@@ -65,7 +65,7 @@ public class Action extends AppCompatActivity {
     private final int REQ_CODE = 100;
     private long conf = 0;
     private long start = 0;
-    private String answer;
+    private String answer = "";
     private boolean doneSpeaking;
     private String scan = "";
     private ArrayList<String> obarray = new ArrayList<String>();
@@ -77,6 +77,7 @@ public class Action extends AppCompatActivity {
     private String read = "";
     private long pcol = 0;
     private long lol = 0;
+    private boolean useLocations = true;
     private ArrayList<String> allclasses = new ArrayList<String>();
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     StorageReference sentRef;
@@ -176,8 +177,18 @@ public class Action extends AppCompatActivity {
                 sentRef = storageRef.child("sent.jpg");
                 long done = (long) dataSnapshot.child("searchdone").getValue();
 
-                if(scan.charAt(scan.length()-1) == ',')
-                    scan = scan.substring(scan.length()-2);
+                if(!answer.equals("")) //ready
+                {
+                    speak(answer);
+                    DatabaseReference an = database.getReference("answer");
+                    an.setValue("");
+                    resetFire(); //resets conf and  mode in firebase
+                    Log.e("answer", answer);
+                }
+
+                if(scan.length() > 2)
+                    if(scan.charAt(scan.length()-1) == ',')
+                        scan = scan.substring(scan.length()-2);
 
                 for(int i = 0; i < 10; i++)
                 {
@@ -216,6 +227,11 @@ public class Action extends AppCompatActivity {
 
         stat.addValueEventListener(new ValueEventListener() { //monitors status (confirm and mode) and is where each "mode" is processed
             @Override
+            public int hashCode() {
+                return super.hashCode();
+            }
+
+            @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 DatabaseReference time = database.getReference("date-time");
@@ -251,7 +267,7 @@ public class Action extends AppCompatActivity {
 
                 }
 
-                if(conf == 1  && start == 1) //ready
+                else if(conf == 1  && start == 1) //ready
                 {
                     speak("How can I help you?");
                     getSpeech();
@@ -272,12 +288,20 @@ public class Action extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DatabaseReference start = database.getReference("status/start");
-                start.setValue(1);
                 DatabaseReference confirm = database.getReference("status/confirm");
+                start.setValue(0);
+                confirm.setValue(0);
+                start.setValue(1);
                 confirm.setValue(1);
                 Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 vib.vibrate(200);
                 slideDownAll(myView);
+//                if(useLocations == false) {
+//                    useLocations = true;
+//                }
+//                else {
+//                    useLocations = false;
+//                }
             }
         });
 
@@ -389,9 +413,15 @@ public class Action extends AppCompatActivity {
         DatabaseReference confirm = database.getReference("status/confirm");
         DatabaseReference mode = database.getReference("status/mode");
         DatabaseReference start = database.getReference("status/start");
+        DatabaseReference in = database.getReference("input");
+        DatabaseReference an = database.getReference("answer");
+        DatabaseReference q = database.getReference("question");
         start.setValue(0);
         confirm.setValue(0);
         mode.setValue(0);
+        in.setValue("");
+        q.setValue("");
+        an.setValue("");
     }
 
     private void getSpeech(){
@@ -542,7 +572,7 @@ public class Action extends AppCompatActivity {
                         }
                         else
                         {
-                            speak("item not found");
+                            //speak("item not found");
                             resetFire();
                             input.setValue("null");
                         }
@@ -551,7 +581,10 @@ public class Action extends AppCompatActivity {
 
                     }
                     else if(m.equals("text")){ ////////////////////////////////////done
-                        speak(read);
+                        if(read.equals(""))
+                            speak("No text found");
+                        else
+                            speak(read);
                         tv.setText(read);
                         resetFire();
 
@@ -592,7 +625,7 @@ public class Action extends AppCompatActivity {
                                         }
                                         objectSearch = getWord(store.getString(), allclasses);
                                         Log.e("object", objectSearch);
-
+                                        String[] locations = {"Home", "School", "Park", "Library"};
                                         //check each log for word
                                         for (int i = finderobject.size() - 1; i >= 0; i--) {
                                             if (finderobject.get(i).contains(objectSearch)) {
@@ -620,6 +653,11 @@ public class Action extends AppCompatActivity {
                                                 finaltime = finaltime + fullclock;
 
                                                 message = message + "on " + finaltime;
+                                                if(useLocations == true)
+                                                {
+                                                   int choose = (int)(Math.random()*locations.length);
+                                                    message = message + " at " + locations[choose];
+                                                }
                                                 tv.setText(message);
                                                 speak(message);
                                                 found = true;
@@ -642,7 +680,9 @@ public class Action extends AppCompatActivity {
                     }
                     else if(m.equals("scan") || m.equals("skin")){ /////////////done
                         String s = "";
-                        if(obarray.size() > 1)
+                        if(scan.equals(""))
+                            speak("Did not detect");
+                        else if(obarray.size() > 1)
                             s = ("there are " + scan);
                         else
                             s = ("there is " + scan);
@@ -664,6 +704,13 @@ public class Action extends AppCompatActivity {
 
                     }
                     /*
+                    else if(ogtext.contains("how") || ogtext.contains("why") || ogtext.contains("what") || ogtext.contains("where") || ogtext.contains("when"))
+                    {g
+                        DatabaseReference q = database.getReference("question");
+                        q.setValue(ogtext);
+                        //mode.setValue(5);
+                    }
+
                     else if(ogtext.contains("repeat") && ogtext.contains("scan"))
                     {
                         speak("There is" + scan);
@@ -689,12 +736,6 @@ public class Action extends AppCompatActivity {
                         speak(read);
                         mode.setValue(0);
                         mode.setValue(3);
-                    }
-                    else if(ogtext.contains("how") || ogtext.contains("why") || ogtext.contains("what") || ogtext.contains("where") || ogtext.contains("when"))
-                    {
-                        DatabaseReference q = database.getReference("question");
-                        q.setValue(ogtext);
-                        mode.setValue(5);
                     }
                      */
                     else{
