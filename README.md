@@ -56,11 +56,16 @@ cd rpi
 python3 run.py
 ```
 
-On SageMaker 
+On Ec2 Instance 
 
 ```
 cd VM
 python3 runall.py
+```
+To test also run in a seperate tab
+
+```
+python3 once.py
 ```
 
 ## Using the Glove and App
