@@ -1,8 +1,8 @@
-#Handy
+# Handy
 
 The Handy as a visual aid for the blind. The Handy is a glove equipped with a raspberry pi that takes a picture of the user’s surroundings. It then uses several CV models to identify and locate the objects or text in the image. With this device, the visually impaired will have a device that describes their surroundings, helps them locate specific objects in real-time, and keep track of their possessions.
 
-##Setup
+## Setup
 
 Aside from the AWS Services, below are the other components used in making the Handy
 
@@ -16,7 +16,7 @@ LSM9DS1
 Push button for the rpi
 (optional) portable power bank 
 
-##Installation
+## Installation
 
 On both your local machine and  raspberry pi, run:
 git clone https://github.com/inafi/handy.git
@@ -58,7 +58,7 @@ cd VM
 python3 runall.py
 '''
 
-##Using the Glove and App
+## Using the Glove and App
 
 After running the commands above, wear the glove. To take a picture, press the button on the side of the glove with the camera facing the scene you want to analyze. From there, press the push button on the side of the glove and wait for the audio prompt. From there, choose a mode:
 
