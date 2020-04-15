@@ -20,7 +20,7 @@ Aside from the AWS Services, below are the other components used in making the H
 
 ## Wiring the Raspberry Pi Zero W
 
-![alt text](http://url/to/img.png)
+![alt text](https://github.com/inafi/handy/rpi/wiring.png)
 
 ## Installation
 
