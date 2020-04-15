@@ -1,6 +1,6 @@
 # Handy
 
-The Handy as a visual aid for the blind. The Handy is a glove equipped with a raspberry pi that takes a picture of the user’s surroundings. It then uses several CV models to identify and locate the objects or text in the image. With this device, the visually impaired will have a device that describes their surroundings, helps them locate specific objects in real-time, and keep track of their possessions.
+The Handy is a glove that serves as visual aid for the blind. It is equipped with a raspberry pi and camerar that takes a picture of the user’s surroundings. It then uses several CV models to identify and locate the objects or text in the image. With this device, the visually impaired will have a device that describes their surroundings, helps them locate specific objects in real-time, and keep track of their possessions.
 
 ## Setup
 
@@ -15,6 +15,12 @@ Aside from the AWS Services, below are the other components used in making the H
 - 4 LEDs
 - Push button for the rpi
 - (optional) portable power bank 
+- (optional) IR distance sensor for distance detection
+- (optional) Arduino nano for distance detection
+
+## Wiring the Raspberry Pi Zero W
+
+![alt text](https://github.com/inafi/handy/rpi/wiring.png)
 
 ## Installation
 
@@ -38,9 +44,17 @@ cd rpi
 pip install -r requirements.txt
 ```
 
-3. On the SageMaker
-Running Program
+3. On the Ec2 instance
 
+Configure your AWS credentials and install the necessary libraries through requirements.txt.
+Follow the steps given by the AWS Marketplace guide to configure the model in the AWS CLI environment
+
+```
+cd VM
+pip install -r requirements.txt
+```
+
+## Running 
 On the Raspberry pi:
 
 ```
@@ -48,24 +62,29 @@ cd rpi
 python3 run.py
 ```
 
-On SageMaker
+On the Ec2 Instance 
 
-Configure your AWS credentials and install the necessary libraries through requirements.txt
-Follow the steps given by the AWS Marketplace guide to configure the model in the AWS CLI environment
-
-'''
+```
 cd VM
 python3 runall.py
-'''
+```
+To test, in a seperate tab run:
+```
+python3 once.py
+```
 
 ## Using the Glove and App
 
 After running the commands above, wear the glove. To take a picture, press the button on the side of the glove with the camera facing the scene you want to analyze. From there, press the push button on the side of the glove and wait for the audio prompt. From there, choose a mode:
 
-###### The Scan feature simply relays what the user’s surroundings are, along with the count of each object. For example, “1 table, 1 laptop, and 3 cups detected.”
+###### The Scan
+This feature simply relays what the user’s surroundings are, along with the count of each object. For example, “1 table, 1 laptop, and 3 cups detected.” Say the word "scan" to use.
 
-###### The Text feature reads out any text in the picture. It first says the surface the text was detected, such as a sign or a book, then the actual writing. For example, “The sign says, “No parking”.
+###### The Text
+This feature reads out any text in the picture. It first says the surface the text was detected, such as a sign or a book, then the actual writing. For example, “The sign says, “No parking”. Say the word "text" to use.
 
-###### The Search feature guides users towards the desired objects which they choose through audio input. Each detected object is accompanied by an x and y degree separation in relation to where the picture was taken. As soon as the picture is taken, the IMU built into the sleeve begins to track the user’s movement. This way, it calculates how far left, right, up or down the user has to move to be aligned with the desired object. To guide the user, vibration motors on the top, bottom, and both sides of the wrist vibrate to signal the user where to move. As the user gets closer to the object, the vibrations intensify until the use presses the button again to signal that they have located the object. Of course, moving in with the motors might be dangerous in some environments, as the user may collide with obstacles. To prevent this, an infrared sensor below the camera alerts the user when they are within 1.5 ft of an object with the audio producing, “collision alert” and then “safe distance” once the user has backed away.
+###### The Search
+This feature guides users towards the desired objects which they choose through audio input. Each detected object is accompanied by an x and y degree separation in relation to where the picture was taken. As soon as the picture is taken, the IMU built into the sleeve begins to track the user’s movement. This way, it calculates how far left, right, up or down the user has to move to be aligned with the desired object. To guide the user, vibration motors on the top, bottom, and both sides of the wrist vibrate to signal the user where to move. As the user gets closer to the object, the vibrations intensify until the use presses the button again to signal that they have located the object. Of course, moving in with the motors might be dangerous in some environments, as the user may collide with obstacles. To prevent this, an infrared sensor below the camera alerts the user when they are within 1.5 ft of an object with the audio producing, “collision alert” and then “safe distance” once the user has backed away. say the word "search" then the name of item you are looking for to use.
 
-###### The Last Seen function asks the user for an object and then returns the time, place, and location the object was last seen. The detected objects for every picture are stored in the database, along with the time taken and the location of the phone. Using a search algorithm, the app is able to detect the latest log containing their object.
+###### The Last Seen
+This function asks the user for an object and then returns the time, place, and location the object was last seen. The detected objects for every picture are stored in the database, along with the time taken and the location of the phone. Using a search algorithm, the app is able to detect the latest log containing their object. Say the word "find" then the object you want to find to use this mode.
