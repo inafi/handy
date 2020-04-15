@@ -33,20 +33,20 @@ Then launch
 
 On your raspberry pi: 
 
-'''
+```
 cd rpi
 pip install -r requirements.txt
-'''
+```
 
 3. On the SageMaker
 Running Program
 
 On the Raspberry pi:
 
-'''
+```
 cd rpi
 python3 run.py
-'''
+```
 
 On SageMaker
 
