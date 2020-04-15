@@ -12,6 +12,18 @@ import datetime
 from firebase_admin import storage
 import shutil
 import urllib.request
+import json
+import boto3
+import logging
+from botocore.exceptions import ClientError
+import flask 
+import os
+import sys
+import base64
+import json
+
+client = boto3.client('sagemaker')
+client2 = boto3.client('sagemaker-runtime')
 
 cli = Redis('localhost')
 
@@ -21,19 +33,6 @@ firebase_admin.initialize_app(cred, {
 })
 
 def v3():
-    #run on gpu 0
-    child = pexpect.spawn('./darknetgch detector test cfg/coco.data cfg/yolov3.cfg yolov3.weights -i 1')
-
-    def getoutput(num):
-        if num == 1:
-            child.expect('Enter Image Path:')
-            child.sendline('../send.jpg')
-            child.expect('Enter Image Path:')
-        else:
-            child.sendline('../send.jpg')
-            child.expect('Enter Image Path:')
-        return child.before
-
     init = 0
     prev = 0
 
@@ -41,94 +40,83 @@ def v3():
         init = int(cli.get('read').decode('utf-8'))
         if init != prev:
             start = time.time()
-            s = getoutput(init)
-            cli.set('writev3', s)
+            with open("/home/ec2-user/send.png", "rb") as image:
+                f = image.read()
+                b = bytearray(f)
+                jsonstring = (client2.invoke_endpoint(
+                EndpointName='sample-endpoint-134EEA74-A9CA-4B4F-8DB1-B9721EEFC63B-2',\
+                Body=b,\
+                ContentType="image/png",
+                ))['Body'].read().decode("utf-8")
+                jsonstring = json.loads(jsonstring)
+                listofargs = []
+                for i in jsonstring:
+                    secondlist = []
+                    secondlist.append(i["id"])
+                    secondlist.append(i["score"] * 100)
+                    secondlist.append([i["top"],i["left"],(int(i["right"])-int(i["left"])),(int(i["bottom"])-int(i["top"]))])
+                    listofargs.append(secondlist)
+#                print("yolo", listofargs)
+                cli.set('writev3', str(listofargs))
             cint = int(cli.get('confirm').decode('utf-8'))
             cint += 1
             cli.set('confirm', cint)
             print('v3 time:', time.time() - start)
         prev = init
 
-def oid():
-    child = pexpect.spawn('./darknetgch detector test cfg/yolo.data cfg/oid.cfg yolov3-oid.weights -thresh 0.13 -i 1')
-
-    def getoutput(num):
-        if num == 1:
-            child.expect('Enter Image Path:')
-            child.sendline('../send.jpg')
-            child.expect('Enter Image Path:')
-        else:
-            child.sendline('../send.jpg')
-            child.expect('Enter Image Path:')
-        return child.before
-
-    init = 0
-    prev = 0
-
-    while(True):
-        init = int(cli.get('read').decode('utf-8'))
-        if init != prev:
-            start = time.time()
-            s = getoutput(init)
-            cli.set('writeoid', s)
-            cint = int(cli.get('confirm').decode('utf-8'))
-            cint += 1
-            cli.set('confirm', cint)
-            print('oid time:', time.time() - start)
-        prev = init
-
-def v9():
-    child = pexpect.spawn('./darknetgch detector test cfg/combine9k.data cfg/yolo9000.cfg yolo9000.weights -i 1')
-
-    def getoutput(num):
-        if num == 1:
-            child.expect('Enter Image Path:')
-            child.sendline('../send.jpg')
-            child.expect('Enter Image Path:')
-        else:
-            child.sendline('../send.jpg')
-            child.expect('Enter Image Path:')
-        return child.before
-
-    init = 0
-    prev = 0
-
-    while(True):
-        init = int(cli.get('read').decode('utf-8'))
-        if init != prev:
-            start = time.time()
-            s = getoutput(init)
-            cli.set('write9000', s)
-            cint = int(cli.get('confirm').decode('utf-8'))
-            cint += 1
-            cli.set('confirm', cint)
-            print("9000:", time.time()-start)
-        prev = init
-
 def pythia():
-    os.system("python runpythia.py")
+    os.system("python3 runpythia.py")
 
 def caption():
-    os.system("python runcaption.py")
+    os.system("python3 runcaption.py")
 
 def exe():
-    os.system("python exec.py")
+    os.system("python3 exec.py")
 
 def mrcnn():
-    os.system("python3 runmrcnn.py")
+    init = 0
+    prev = 0
+
+    while(True):
+        init = int(cli.get('read').decode('utf-8'))
+        if init != prev:
+            start = time.time()
+            with open("/home/ec2-user/send.png", "rb") as image:
+                f = image.read()
+                b = bytearray(f)
+                jsonstring = (client2.invoke_endpoint(
+                EndpointName='sample-endpoint-134EEA74-A9CA-4B4F-8DB1-B9721EEFC63B-1',\
+                Body=b,\
+                ContentType="image/png",
+                ))['Body'].read().decode("utf-8")
+                jsonstring = json.loads(jsonstring)
+                listofargs = []
+                for i in jsonstring:
+                    secondlist = []
+                    secondlist.append(i["id"])
+                    secondlist.append(i["score"] * 100)
+                    secondlist.append([i["top"],i["left"],(int(i["right"])-int(i["left"])),(int(i["bottom"])-int(i["top"]))])
+                    listofargs.append(secondlist)
+ #               print("rcnn", listofargs)
+                cli.set('writemrcnn', str(listofargs))
+            cint = int(cli.get('confirm').decode('utf-8'))
+            cint += 1
+            cli.set('confirm', cint)
+            print('v3 time:', time.time() - start)
+        prev = init
 
 def text():
-    os.system("python exet.py")
+    os.system("python3 exet.py")
 
 def search():
-    os.system("python exes.py")
+    os.system("python3 exes.py")
 
 def check():
     prev = 0
     init = 0
     while(True):
         init = int(cli.get('confirm').decode('utf-8'))
-        if init == 4:
+        if init == 2:
             print("exe ran")
             exe()
         prev = init
@@ -158,7 +146,7 @@ def once():
             start = time.time()
             cli.set('read', int(cli.get('read').decode('utf-8')) + 1)
             while(True):
-                if int(cli.get('confirm').decode('utf-8')) == 5:
+                if int(cli.get('confirm').decode('utf-8')) == 3:
                     ref = db.reference("scan")
                     ref2 = db.reference("date-time")
                     ref3 = db.reference("log")
@@ -193,16 +181,12 @@ def reset():
 
 if __name__ == '__main__':
     reset()
-    p1 = Process(target=v9)
-    p1.start()
-    p2 = Process(target=oid)
-    p2.start()
     p3 = Process(target=v3)
     p3.start()
     p4 = Process(target=mrcnn)
     p4.start()
-    p5 = Process(target=text)
-    p5.start()
+#    p5 = Process(target=text)
+#    p5.start()
     p6 = Process(target=search)
     p6.start()
     p7 = Process(target=once)

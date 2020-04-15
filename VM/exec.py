@@ -1,10 +1,11 @@
-import os
-import inflect
-from redis import Redis
-import sys
-from collections import namedtuple
-import json
- 
+import os 
+import inflect 
+from redis import Redis 
+import sys 
+from collections import namedtuple 
+import json 
+from ast import literal_eval
+
 #Sets type rectangle tuple for area intersection
 Rectangle = namedtuple('Rectangle', 'xmin ymin xmax ymax')
 
@@ -91,49 +92,17 @@ def run(acc, model):
     classes = []
     if model == 3:
         text = cli.get('writev3').decode('utf-8')
-    elif model == 9000:
-        text = cli.get('write9000').decode('utf-8')
-    elif model == 'oid':
-        text = cli.get('writeoid').decode('utf-8')
     else:
         text = cli.get('writemrcnn').decode('utf-8')
     try:
-        if (model != 'mrcnn'):
-            #yolos
-            text = text.split("Failed")[0]
-            text = text.split("seconds.")[1].split("Not")[0]
-            text = (text.replace('\n', '')).split("\r")
-            del text[0]
-            del text[-1]
-            print("y", text, "\n")
-            text = removemultiple(text)
-            #Converts text to this format: ['person', 81, [365, 859, 496, 1099]
-            for i in range(int(len(text)/2)):
-                classes.append([text[2 * i], text[2 * i + 1]])
-            for i in range(int(len(classes))):
-                box = [int(x) for x in classes[i][1].strip("Bounds:").split()]
-                outputs.append([classes[i][0].split(": ")[0], int(classes[i][0].split(": ")[1].strip("%")), box])
-            save = outputs
-        else:
-            #maskrcnn
-            #Converts text to this format: ['person', 81, [365, 859, 496, 1099]
-            text = text.split("  ")
-            del text[-1]
-            print("mask", text, "\n")
-            for i in range(len(text)):
-                t = text[i].split(" ")
-                if (len(t) > 6):
-                    t[0] += " " + t[1]
-                    del t[1]
-                t = [t[0], int(t[1]), [int(t[2]), int(t[3]), int(t[4]), int(t[5])]]
-                outputs.append(t)
-            save = outputs
-#        outputs = filtercheck(outputs, acc)
+        outputs = literal_eval(text)
+        
+        for i in range(len(outputs)):
+            outputs[i][1] = int(outputs[i][1])
+            for k in range(4):
+                outputs[i][2][k] = int(outputs[i][2][k])
+#        print(model, outputs)
         outputs = filter_acc(outputs, acc)
-        #if outputs == [] and getavg(save) != -1:
-        #    outputs = filter_acc(save, getavg(save))
-        #print(outputs)
-        #print(model)
         return outputs
     except Exception as e:
 #        print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
@@ -166,21 +135,12 @@ def rectfilter(lower, upper):
     return upper + lower
 
 def areafilter(v9, oid, v3, mrcnn):
-#    print(v9, "\n\n", oid, "\n\n", v3, "\n\n", mrcnn, "\n\n")
+    print(v9, "\n\n", oid, "\n\n", v3, "\n\n", mrcnn, "\n\n")
     all = [v9, oid, v3, mrcnn]
     if (all.count(-1) == 3):
         all[:] = (value for value in all if value != -1)
         return all[0]
-    yolo = [v9, oid, v3]
-    if (yolo.count(-1) == 2):
-        yolo[:] = (value for value in yolo if value != -1)
-        yolo = yolo[0]
-    if v9 != -1:    
-        yolo = v9
-    else:
-        yolo = oid
-    if v9 != -1 and oid != -1:
-        yolo = rectfilter(v9, oid)
+    yolo = v3
     if v3 != -1:
         yolo = rectfilter(yolo, v3)
     if mrcnn != -1:
@@ -241,26 +201,24 @@ def pluralize(arr):
         else:
             read += "and " + str(out[i][0]) + " " + out[i][1]
  #   print(arr)
-#    print(read)
+    print(read)
     cli.set('exe', read)
-    cli.set('confirm', 5)
+    cli.set('confirm', 3)
  
 # Runs everything and assume jpg input - jpegs must be in /data
 def get_output():
     # Accuracy filters of v3 and 9000
-    y3 = run(80, 3)
-    y9 = run(90, 9000)
-    mrcnn = run(91, 'mrcnn')
-    oid = run(10, 'oid')
-    final = areafilter(y9, oid, y3, mrcnn)
+    y3 = run(30, 3)
+    mrcnn = run(30, 'mrcnn')
+    final = areafilter(-1, -1, y3, mrcnn)
     cli.set("aray","[]")
     #for i in final:
     #    print(i)
-    if y3 == [] and y9 == [] and mrcnn == [] and oid == []:
+    if y3 == [] and mrcnn == []:
         print("Could not detect any objects")
         cli.set("exe", "Could not detect any objects")
-        cli.set('confirm', 5)
-    elif not (y3 == -1 and y9 == -1 and mrcnn == -1 and oid == -1):
+        cli.set('confirm', 3)
+    elif not (y3 == -1 and mrcnn == -1):
         #just use json.dumps() to convert list to string
         cli.set('search', json.dumps(final))
         array = get_l(final)
@@ -268,7 +226,7 @@ def get_output():
         pluralize(array)
     else:
         print("Unable to Classify")
-        cli.set('confirm', 5)
+        cli.set('confirm', 3)
  
 # Must be jpg
 get_output()
