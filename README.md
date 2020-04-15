@@ -38,14 +38,14 @@ cd rpi
 pip install -r requirements.txt
 ```
 
-3. On the SageMaker
+3. On the Ec2 instance
 
-Configure your AWS credentials and install the necessary libraries through requirements.txt
+Configure your AWS credentials and install the necessary libraries through requirements.txt.
 Follow the steps given by the AWS Marketplace guide to configure the model in the AWS CLI environment
 
 ```
 cd VM
-pip install -r requirements.txt
+pip install -r ../requirements.txt
 ```
 
 ## Running 
@@ -56,11 +56,15 @@ cd rpi
 python3 run.py
 ```
 
-On SageMaker 
+On the Ec2 Instance 
 
 ```
 cd VM
 python3 runall.py
+```
+To test, in a seperate tab run:
+```
+python3 once.py
 ```
 
 ## Using the Glove and App
