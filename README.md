@@ -1,6 +1,6 @@
 # Handy
 
-The Handy as a visual aid for the blind. The Handy is a glove equipped with a raspberry pi that takes a picture of the user’s surroundings. It then uses several CV models to identify and locate the objects or text in the image. With this device, the visually impaired will have a device that describes their surroundings, helps them locate specific objects in real-time, and keep track of their possessions.
+The Handy is a glove that serves as visual aid for the blind. It is equipped with a raspberry pi and camerar that takes a picture of the user’s surroundings. It then uses several CV models to identify and locate the objects or text in the image. With this device, the visually impaired will have a device that describes their surroundings, helps them locate specific objects in real-time, and keep track of their possessions.
 
 ## Setup
 
@@ -45,7 +45,7 @@ Follow the steps given by the AWS Marketplace guide to configure the model in th
 
 ```
 cd VM
-pip install -r ../requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Running 
