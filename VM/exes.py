@@ -37,7 +37,7 @@ def angle(box, ob):
 while(True):
     init = int(cli.get('confirm'))
     #prev = 5 means that exec has run
-    if init == 0 and prev == 5:
+    if init == 0 and prev == 3:
         arr = json.loads(str(cli.get('search').decode('utf-8')))
         #simplifies conversion btwn string and list
         #print(arr)
