@@ -39,8 +39,16 @@ pip install -r requirements.txt
 ```
 
 3. On the SageMaker
-Running Program
 
+Configure your AWS credentials and install the necessary libraries through requirements.txt
+Follow the steps given by the AWS Marketplace guide to configure the model in the AWS CLI environment
+
+```
+cd VM
+pip install -r ../requirements.txt
+```
+
+## Running 
 On the Raspberry pi:
 
 ```
@@ -48,15 +56,12 @@ cd rpi
 python3 run.py
 ```
 
-On SageMaker
+On SageMaker 
 
-Configure your AWS credentials and install the necessary libraries through requirements.txt
-Follow the steps given by the AWS Marketplace guide to configure the model in the AWS CLI environment
-
-'''
+```
 cd VM
 python3 runall.py
-'''
+```
 
 ## Using the Glove and App
 
