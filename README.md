@@ -42,8 +42,26 @@ cd rpi
 pip install -r requirements.txt
 ```
 
-3. On the Ec2 instance
-Running Program
+3. Setting up the models and deploying on SageMaker
+
+Configure your AWS credentials and install the necessary libraries through requirements.txt
+Follow the steps given by the AWS Marketplace guide to configure the model in the AWS CLI environment
+
+To configure both model's endpoints run:
+
+```
+python3 yolo3.py
+python3 rcnn.py
+```
+
+To delete endpoints run:
+
+```
+python3 yolo3.py delete
+python3 rcnn.py delete
+```
+
+4. Running the programs
 
 On the Raspberry pi:
 
@@ -52,16 +70,17 @@ cd rpi
 python3 run.py
 ```
 
-On SageMaker
-
-Configure your AWS credentials and install the necessary libraries through requirements.txt
-Follow the steps given by the AWS Marketplace guide to configure the model in the AWS CLI environment
-
 Then, on the Ec2 instance
 
 ```
 cd VM
 python3 runall.py
+```
+
+To test on the program on the Ec2 instance, simultaneously run:
+
+```
+python3 once.py
 ```
 
 ## Using the Glove and App
