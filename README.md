@@ -68,14 +68,14 @@ python3 runall.py
 
 After running the commands above, wear the glove. To take a picture, press the button on the side of the glove with the camera facing the scene you want to analyze. From there, press the push button on the side of the glove and wait for the audio prompt. From there, choose a mode:
 
-###### The Scan
+###### Scan
 This feature simply relays what the user’s surroundings are, along with the count of each object. For example, “1 table, 1 laptop, and 3 cups detected.” Say "scan" to activate this mode.
 
-###### The Text
+###### Text
 This feature reads out any text in the picture. It first says the surface the text was detected, such as a sign or a book, then the actual writing. For example, “The sign says, “No parking”. Say "text" to activate this mode.
 
-###### The Search
+###### Search
 This feature guides users towards the desired objects which they choose through audio input. Each detected object is accompanied by an x and y degree separation in relation to where the picture was taken. As soon as the picture is taken, the IMU built into the sleeve begins to track the user’s movement. This way, it calculates how far left, right, up or down the user has to move to be aligned with the desired object. To guide the user, vibration motors on the top, bottom, and both sides of the wrist vibrate to signal the user where to move. As the user gets closer to the object, the vibrations intensify until the use presses the button again to signal that they have located the object. Of course, moving in with the motors might be dangerous in some environments, as the user may collide with obstacles. To prevent this, an infrared sensor below the camera alerts the user when they are within 1.5 ft of an object with the audio producing, “collision alert” and then “safe distance” once the user has backed away. Say "search" and the name of the item you are looking for to activate this mode.
 
-###### The Last Seen
+###### Last Seen
 This function asks the user for an object and then returns the time, place, and location the object was last seen. The detected objects for every picture are stored in the database, along with the time taken and the location of the phone. Using a search algorithm, the app is able to detect the latest log containing their object. Say "find" and the name of the item you are looking for to activate this mode.
