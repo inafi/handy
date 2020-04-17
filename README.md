@@ -25,15 +25,16 @@ Push button for the rpi
 On both your local machine and  raspberry pi, run:
 git clone https://github.com/inafi/handy.git
 
-1. Downloading the App
+##1. Downloading the App
 
 On your machine, move ‘g’ into your Android studio projects folder
+
 ```
 cp app/g ~/AndroidStudioProjects
 ```
 Then launch
 
-2. Setting up the Raspberry pi
+##2. Setting up the Raspberry pi
 
 On your raspberry pi: 
 
@@ -42,7 +43,7 @@ cd rpi
 pip install -r requirements.txt
 ```
 
-3. Setting up the models and deploying on SageMaker
+##3. Setting up the models and deploying on SageMaker
 
 Configure your AWS credentials and install the necessary libraries through requirements.txt
 Follow the steps given by the AWS Marketplace guide to configure the model in the AWS CLI environment
@@ -61,7 +62,7 @@ python3 yolo3.py delete
 python3 rcnn.py delete
 ```
 
-4. Running the programs
+##4. Running the programs
 
 On the Raspberry pi:
 
