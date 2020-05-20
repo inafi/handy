@@ -42,7 +42,7 @@ googleapis-common-protos==1.51.0
 grpcio==1.27.2
 gunicorn==20.0.4
 h5py==2.10.0
-httplib2==0.17.0
+httplib2==0.18.0
 idna==2.8
 IP2Location==8.4.1
 ipaddress==1.0.23
