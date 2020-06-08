@@ -15,7 +15,7 @@ o = 0
 save = []
 last = []
 count = 0
-
+print("button ready")
 while(True):
     if GPIO.input(4) == GPIO.HIGH:
         s = 0
