@@ -236,8 +236,4 @@ if __name__ == '__main__':
     p6.start()
     p7 = Process(target=once)
     p7.start()
-#    p8 = Process(target=pythia)
-#    p8.start()
-#    p9 = Process(target=caption)
-#    p9.start()
     check()
