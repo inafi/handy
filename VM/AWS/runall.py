@@ -64,12 +64,6 @@ def v3():
             print('v3 time:', time.time() - start)
         prev = init
 
-def pythia():
-    os.system("python3 runpythia.py")
-
-def caption():
-    os.system("python3 runcaption.py")
-
 def exe():
     os.system("python3 exec.py")
 
@@ -220,7 +214,6 @@ def reset():
     cli.set('writeoid', '')
     cli.set('write9000', '')
     cli.set('writemrcnn', '')
-    cli.set('writepythia', '')
     cli.set('exe', '')
     cli.set('array', '[]')
 
