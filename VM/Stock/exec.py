@@ -190,7 +190,7 @@ def areafilter(v9, oid, v3, mrcnn):
 #this removes clothing and other wierd stuff - this should be temporary
 def tempremove(arr):
     for i in range(len(arr)):
-        if (arr[i][0] in ['footwear', 'human face', 'wheel', 'vehicle registration plate', 'office building', 'machine']):
+        if (arr[i][0] in ['footwear', 'human face', 'wheel', 'vehicle registration plate', 'office building', 'machine', 'rocket']):
             arr[i][0] = -1
     for i in range(len(arr)):
         if arr[i][0] == -1:
@@ -253,12 +253,13 @@ def get_output():
     mrcnn = run(86, 'mrcnn') #91
     oid = run(10, 'oid') #10
     final = areafilter(y9, oid, y3, mrcnn)
+    print(final)
     cli.set("aray","[]")
     #for i in final:
     #    print(i)
     if y3 == [] and y9 == [] and mrcnn == [] and oid == []:
         print("Could not detect any objects")
-        cli.set("exe", "Could not detect any objects")
+        cli.set("exe", "no detected object")
         cli.set('confirm', 5)
     elif not (y3 == -1 and y9 == -1 and mrcnn == -1 and oid == -1):
         #just use json.dumps() to convert list to string
