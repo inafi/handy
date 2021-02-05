@@ -1,0 +1,5 @@
+env
+*.pyc
+__pycache__/
+Flask/FlaskAPI/factcheck/data/data.csv
+Flask/FlaskAPI/factcheck/data/data.csv
